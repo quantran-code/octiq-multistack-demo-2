@@ -19,6 +19,15 @@ var products = []Product{
 	{ID: "p-3", Name: "Backpack", PriceCents: 3900},
 }
 
+// ServiceInfo identifies this service for discovery callers.
+type ServiceInfo struct {
+	Service string `json:"service"`
+	Version string `json:"version"`
+	Runtime string `json:"runtime"`
+}
+
+var serviceInfo = ServiceInfo{Service: "catalog-go", Version: "0.1.0", Runtime: "go"}
+
 func findProduct(id string) (Product, bool) {
 	for _, product := range products {
 		if product.ID == id {
@@ -40,6 +49,9 @@ func newRouter() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /health", func(w http.ResponseWriter, _ *http.Request) {
 		writeJSON(w, http.StatusOK, map[string]string{"status": "ok"})
+	})
+	mux.HandleFunc("GET /info", func(w http.ResponseWriter, _ *http.Request) {
+		writeJSON(w, http.StatusOK, serviceInfo)
 	})
 	mux.HandleFunc("GET /products", func(w http.ResponseWriter, _ *http.Request) {
 		writeJSON(w, http.StatusOK, map[string]any{"products": products})
