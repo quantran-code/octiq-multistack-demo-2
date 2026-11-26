@@ -5,8 +5,8 @@ running tickets: every service is a tiny, independent web app that keeps its dat
 
 | Service | Language / framework | Endpoints | Default port |
 | --- | --- | --- | --- |
-| `services/gateway-ts` | TypeScript / Express | `GET /health`, `GET /services` | 3000 |
-| `services/catalog-go` | Go / net/http | `GET /health`, `GET /products`, `GET /products/{id}` | 3001 |
+| `services/gateway-ts` | TypeScript / Express | `GET /health`, `GET /services`, `GET /info` | 3000 |
+| `services/catalog-go` | Go / net/http | `GET /health`, `GET /products`, `GET /products/{id}`, `GET /info` | 3001 |
 | `services/orders-java` | Java 17 / Spring Boot | `GET /health`, `GET /orders`, `POST /orders` | 3002 |
 | `services/pricing-python` | Python / FastAPI | `GET /health`, `POST /quote` | 3003 |
 | `services/notify-ruby` | Ruby / Sinatra | `GET /health`, `GET /notifications`, `POST /notifications` | 3004 |

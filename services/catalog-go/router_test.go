@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -29,5 +31,25 @@ func TestRoutes(t *testing.T) {
 		if !strings.Contains(rec.Body.String(), tc.body) {
 			t.Errorf("%s: body = %s, want it to contain %s", tc.path, rec.Body.String(), tc.body)
 		}
+	}
+}
+
+func TestInfo(t *testing.T) {
+	rec := httptest.NewRecorder()
+	newRouter().ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "/info", nil))
+	if rec.Code != http.StatusOK {
+		t.Fatalf("/info: status = %d, want %d", rec.Code, http.StatusOK)
+	}
+	var got ServiceInfo
+	if err := json.Unmarshal(rec.Body.Bytes(), &got); err != nil {
+		t.Fatalf("/info: decode body: %v", err)
+	}
+	want := ServiceInfo{
+		Service:   "catalog-go",
+		Runtime:   "go/net-http",
+		Endpoints: []string{"/health", "/products", "/products/{id}", "/info"},
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("/info: body = %+v, want %+v", got, want)
 	}
 }
