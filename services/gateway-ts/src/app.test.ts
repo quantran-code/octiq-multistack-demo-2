@@ -14,4 +14,14 @@ describe('gateway', () => {
     expect(res.status).toBe(200)
     expect(res.body.services).toEqual(SERVICES)
   })
+
+  it('reports service info', async () => {
+    const res = await request(createApp()).get('/info')
+    expect(res.status).toBe(200)
+    expect(res.body).toEqual({
+      service: 'gateway-ts',
+      runtime: 'typescript/express',
+      endpoints: ['/health', '/services', '/info']
+    })
+  })
 })

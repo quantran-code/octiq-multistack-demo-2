@@ -19,6 +19,19 @@ var products = []Product{
 	{ID: "p-3", Name: "Backpack", PriceCents: 3900},
 }
 
+// ServiceInfo describes this service and the routes it serves.
+type ServiceInfo struct {
+	Service   string   `json:"service"`
+	Runtime   string   `json:"runtime"`
+	Endpoints []string `json:"endpoints"`
+}
+
+var serviceInfo = ServiceInfo{
+	Service:   "catalog-go",
+	Runtime:   "go/net-http",
+	Endpoints: []string{"/health", "/products", "/products/{id}", "/info"},
+}
+
 func findProduct(id string) (Product, bool) {
 	for _, product := range products {
 		if product.ID == id {
@@ -40,6 +53,9 @@ func newRouter() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /health", func(w http.ResponseWriter, _ *http.Request) {
 		writeJSON(w, http.StatusOK, map[string]string{"status": "ok"})
+	})
+	mux.HandleFunc("GET /info", func(w http.ResponseWriter, _ *http.Request) {
+		writeJSON(w, http.StatusOK, serviceInfo)
 	})
 	mux.HandleFunc("GET /products", func(w http.ResponseWriter, _ *http.Request) {
 		writeJSON(w, http.StatusOK, map[string]any{"products": products})

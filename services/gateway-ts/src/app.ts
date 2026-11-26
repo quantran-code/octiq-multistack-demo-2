@@ -7,6 +7,12 @@ export const SERVICES = [
   { name: 'notify-ruby', port: 3004 }
 ]
 
+export const SERVICE_INFO: { service: string; runtime: string; endpoints: string[] } = {
+  service: 'gateway-ts',
+  runtime: 'typescript/express',
+  endpoints: ['/health', '/services', '/info']
+}
+
 export function createApp(): express.Express {
   const app = express()
   app.use(express.json())
@@ -17,6 +23,10 @@ export function createApp(): express.Express {
 
   app.get('/services', (_req, res) => {
     res.json({ services: SERVICES })
+  })
+
+  app.get('/info', (_req, res) => {
+    res.json(SERVICE_INFO)
   })
 
   return app
