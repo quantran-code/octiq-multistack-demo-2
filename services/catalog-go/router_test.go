@@ -14,6 +14,7 @@ func TestRoutes(t *testing.T) {
 		body   string
 	}{
 		{"/health", http.StatusOK, `"status":"ok"`},
+		{"/info", http.StatusOK, `"service":"catalog-go"`},
 		{"/products", http.StatusOK, `"name":"Backpack"`},
 		{"/products/p-2", http.StatusOK, `"name":"Pen"`},
 		{"/products/missing", http.StatusNotFound, "product not found"},
